@@ -22768,8 +22768,31 @@ const struct BaseStats gBaseStats[] =
         .abilities = {ABILITY_SWIFT_SWIM, ABILITY_ADAPTABILITY, ABILITY_MOLD_BREAKER},
         .bodyColor = BODY_COLOR_GREEN,
         .noFlip = FALSE,
-        .flags = FLAG_GENDER_DIFFERENCE,
     },
+
+    /*[SPECIES_BASCULEGION_FEMALE] =
+    {
+        .baseHP        = 120,
+        .baseAttack    = 92,
+        .baseDefense   = 65,
+        .baseSpeed     = 78,
+        .baseSpAttack  = 100,
+        .baseSpDefense = 75,
+        .type1 = TYPE_WATER,
+        .type2 = TYPE_GHOST,
+        .catchRate = 25,
+        .expYield = 186,
+        .evYield_HP     = 2,
+        .genderRatio = MON_FEMALE,
+        .eggCycles = 40,
+        .friendship = 70,
+        .growthRate = GROWTH_MEDIUM_FAST,
+        .eggGroup1 = EGG_GROUP_WATER_2,
+        .eggGroup2 = EGG_GROUP_WATER_2,
+        .abilities = {ABILITY_SWIFT_SWIM, ABILITY_ADAPTABILITY, ABILITY_MOLD_BREAKER},
+        .bodyColor = BODY_COLOR_GREEN,
+        .noFlip = FALSE,
+    },*/
 
     [SPECIES_SNEASLER] =
     {
