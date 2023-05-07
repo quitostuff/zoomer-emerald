@@ -288,6 +288,22 @@ Route103_EventScript_Isabelle::
 	msgbox Route103_Text_IsabellePostBattle, MSGBOX_AUTOCLOSE
 	end
 
+Route103_EventScript_SuperRodFisherman::
+	lock
+	faceplayer
+	goto_if_set FLAG_RECEIVED_SUPER_ROD, Route103_EventScript_ReceivedSuperRod
+	msgbox Route103_Text_YouWantSuperRod, MSGBOX_DEFAULT
+	giveitem ITEM_SUPER_ROD
+	setflag FLAG_RECEIVED_SUPER_ROD
+	msgbox Route103_Text_TryDroppingRodInWater, MSGBOX_DEFAULT
+	release
+	end
+
+Route103_EventScript_ReceivedSuperRod::
+	msgbox Route103_Text_GiveAManAFish, MSGBOX_DEFAULT
+	release
+	end
+
 Route103_Text_MayRoute103Pokemon:
 	.string "MAY: Let's see… The POKéMON found\n"
 	.string "on ROUTE 103 include…$"
@@ -353,3 +369,20 @@ Route103_Text_RouteSign:
 	.string "ROUTE 103\n"
 	.string "{DOWN_ARROW} OLDALE TOWN$"
 
+Route103_Text_YouWantSuperRod:
+	.string "I'm just fishing up some\n"
+	.string "POKéMON in the river.\p"
+	.string "Would you like to try it as well?\n"
+	.string "It's a relaxing activity.\p"
+	.string "I'll give you one of my fishing rods\n"
+	.string "so you can see for yourself.$"
+
+Route103_Text_TryDroppingRodInWater:
+	.string "If there's any water, try dropping in\n"
+	.string "your Rod and see what bites!$"
+
+Route103_Text_GiveAManAFish:
+	.string "If you give someone a fish,\n"
+	.string "you feed them for a day.\p"
+	.string "If you teach someone how to fish,\n"
+	.string "you feed them for a lifetime!$"
