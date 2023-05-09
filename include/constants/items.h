@@ -927,11 +927,12 @@
 #define ITEM_TEA 755
 #define ITEM_RUBY 756
 #define ITEM_SAPPHIRE 757
-#define ITEM_LINK_CABLE 758
-#define ITEM_TRADE_TOKEN 759
-#define ITEM_GAME_COUPON 760
+#define ITEM_LINK_CABLE 758         //new usable items go here
+#define ITEM_COMMON_CANDY 759
+#define ITEM_TRADE_TOKEN 760
+#define ITEM_GAME_COUPON 761
 
-#define ITEMS_COUNT 761
+#define ITEMS_COUNT 762
 #define ITEM_FIELD_ARROW ITEMS_COUNT
 
 // Range of berries given out by various NPCS
@@ -995,6 +996,7 @@
 #define ITEM_B_USE_OTHER    2
 
 // Check if the item is one that can be used on a Pokemon.
-#define ITEM_HAS_EFFECT(item) ((item) >= ITEM_POTION && (item) <= LAST_BERRY_INDEX)
+// Additional OR statement added so i don't have to re-index literally everything after last_berry_index
+#define ITEM_HAS_EFFECT(item) (((item) >= ITEM_POTION && (item) <= LAST_BERRY_INDEX) || ((item) >= ITEM_LINK_CABLE && (item) <= ITEM_COMMON_CANDY))
 
 #endif  // GUARD_CONSTANTS_ITEMS_H

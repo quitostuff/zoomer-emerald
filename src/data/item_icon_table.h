@@ -806,6 +806,7 @@ const u32 *const gItemIconTable[][2] =
     [ITEM_LINK_CABLE] = {gItemIcon_LinkCable, gItemIconPalette_LinkCable},
     [ITEM_TRADE_TOKEN] = {gItemIcon_TradeToken, gItemIconPalette_TradeToken},
     [ITEM_GAME_COUPON] = {gItemIcon_GameCoupon, gItemIconPalette_GameCoupon},
+    [ITEM_COMMON_CANDY] = {gItemIcon_RareCandy, gItemIconPalette_RareCandy},
     // Return to field arrow
     [ITEM_FIELD_ARROW] = {gItemIcon_ReturnToFieldArrow, gItemIconPalette_ReturnToFieldArrow},
 };

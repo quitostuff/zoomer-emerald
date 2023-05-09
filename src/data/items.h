@@ -10014,4 +10014,17 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .flingPower = 30,
     },
+
+    [ITEM_COMMON_CANDY] =
+    {
+        .name = _("Common Candy"),
+        .itemId = ITEM_COMMON_CANDY,
+        .price = 0,
+        .description = sRareCandyDesc,
+        .importance = 1,
+        .registrability = TRUE,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_RareCandy,
+    },
 };

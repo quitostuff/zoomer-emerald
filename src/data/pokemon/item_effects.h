@@ -515,6 +515,7 @@ const u8 *const gItemEffectTable[] =
     [ITEM_EXP_CANDY_M - ITEM_POTION]      = gItemEffect_RareCandy,
     [ITEM_EXP_CANDY_L - ITEM_POTION]      = gItemEffect_RareCandy,
     [ITEM_EXP_CANDY_XL - ITEM_POTION]     = gItemEffect_RareCandy,
+    [ITEM_COMMON_CANDY - ITEM_POTION]     = gItemEffect_RareCandy,
     //[ITEM_DYNAMAX_CANDY - ITEM_POTION]    = gItemEffect_DynamaxCandy, // Todo
 
     // Medicinal Flutes
@@ -552,6 +553,7 @@ const u8 *const gItemEffectTable[] =
     [ITEM_CHIPPED_POT - ITEM_POTION]      = gItemEffect_EvoItem,
     [ITEM_GALARICA_CUFF - ITEM_POTION]    = gItemEffect_EvoItem,
     [ITEM_GALARICA_WREATH - ITEM_POTION]  = gItemEffect_EvoItem,
+    [ITEM_LINK_CABLE - ITEM_POTION]       = gItemEffect_EvoItem,
 
     // Berries
     [ITEM_CHERI_BERRY - ITEM_POTION]      = gItemEffect_CheriBerry,

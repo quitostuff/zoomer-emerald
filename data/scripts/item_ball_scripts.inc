@@ -657,3 +657,7 @@ MagmaHideout_4F_EventScript_ItemMaxRevive::
 MagmaHideout_3F_3R_EventScript_ItemEscapeRope::
 	finditem ITEM_ESCAPE_ROPE
 	end
+
+OldaleTown_EventScript_ItemCommonCandy::
+	finditem ITEM_COMMON_CANDY
+	end
