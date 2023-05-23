@@ -909,6 +909,46 @@ LittlerootTown_EventScript_GiveRunningShoes::
 	delay 30
 	return
 
+LittlerootTown_EventScript_StarterRegionSelect::
+	lock
+	faceplayer
+	message LittlerootTown_Text_AskWhichRegion
+	waitmessage
+	multichoice 0, 0, MULTI_STARTER_REGION_CHOICE, FALSE
+	switch VAR_RESULT
+	case 0, LittlerootTown_EventScript_Kalos_Selected
+	case 1, LittlerootTown_EventScript_Alola_Selected
+	case 2, LittlerootTown_EventScript_Galar_Selected
+	case MULTI_B_PRESSED, LittlerootTown_EventScript_No_Region_Selected
+	end
+
+LittlerootTown_EventScript_Kalos_Selected::
+	setvar VAR_STARTER_REGION_CHOICE, 0
+	msgbox LittlerootTown_Text_Kalos_Select, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+LittlerootTown_EventScript_Alola_Selected::
+	setvar VAR_STARTER_REGION_CHOICE, 1
+	msgbox LittlerootTown_Text_Alola_Select, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+LittlerootTown_EventScript_Galar_Selected::
+	setvar VAR_STARTER_REGION_CHOICE, 2
+	msgbox LittlerootTown_Text_Galar_Select, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+LittlerootTown_EventScript_No_Region_Selected::
+	msgbox LittlerootTown_Text_Not_Telling, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
 LittlerootTown_Text_OurNewHomeLetsGoInside:
 	.string "MOM: {PLAYER}, we're here, honey!\p"
 	.string "It must be tiring riding with our things\n"
@@ -1019,3 +1059,27 @@ LittlerootTown_Text_BirchSomethingToShowYouAtLab:
 	.string "I have something to show you.\n"
 	.string "Let's go to my LAB.$"
 
+LittlerootTown_Text_AskWhichRegion:
+	.string "Hello there new neighbor!\n"
+	.string "Which region did you move from?$"
+
+LittlerootTown_Text_Kalos_Select:
+	.string "The Kalos Region?\p"
+	.string "I heard that the Pokemon there\n"
+	.string "can evolve in the middle of a battle!$"
+
+LittlerootTown_Text_Alola_Select:
+	.string "The Alola Region?\p"
+	.string "I heard that the people there\n"
+	.string "make funny dance moves while battling.$"
+
+LittlerootTown_Text_Galar_Select:
+	.string "The Galar Region?\p"
+	.string "I heard that the Pokemon there\n"
+	.string "can get really really big!$"
+
+LittlerootTown_Text_Not_Telling:
+	.string "Is that a secret? \p"
+	.string "That's okay, you don't have to\n"
+	.string "tell me if you don't want to...$"
+	

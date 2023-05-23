@@ -1821,3 +1821,10 @@ const u8 gText_Answer[] = _("ANSWER");
 const u8 gText_PokeBalls[] = _("POKé BALLS");
 const u8 gText_Berry[] = _("BERRY");
 const u8 gText_Berries[] = _("BERRIES");
+
+// New Stuff
+// Region Select
+const u8 gText_KalosRegion[] = _("Kalos");
+const u8 gText_AlolaRegion[] = _("Alola");
+const u8 gText_GalarRegion[] = _("Galar");
+const u8 gText_HisuiRegion[] = _("Hisui");

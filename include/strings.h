@@ -3030,4 +3030,11 @@ extern const u8 gText_BoxName[];
 extern const u8 gText_PkmnsNickname[];
 extern const u8 gText_TellHimTheWords[];
 
+// New Stuff
+// Region Select
+extern const u8 gText_KalosRegion[];
+extern const u8 gText_AlolaRegion[];
+extern const u8 gText_GalarRegion[];
+extern const u8 gText_HisuiRegion[];
+
 #endif // GUARD_STRINGS_H

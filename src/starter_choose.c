@@ -23,6 +23,7 @@
 #include "window.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
+#include "constants/vars.h"
 
 #define STARTER_MON_COUNT   3
 
@@ -115,11 +116,32 @@ static const u8 sStarterLabelCoords[STARTER_MON_COUNT][2] =
     {8, 4},
 };
 
-static const u16 sStarterMon[STARTER_MON_COUNT] =
+static const u16 sStarterMonKalos[STARTER_MON_COUNT] =
 {
-    SPECIES_TREECKO,
-    SPECIES_TORCHIC,
-    SPECIES_MUDKIP,
+    SPECIES_CHESPIN,
+    SPECIES_FENNEKIN,
+    SPECIES_FROAKIE,
+};
+
+static const u16 sStarterMonAlola[STARTER_MON_COUNT] =
+{
+    SPECIES_ROWLET,
+    SPECIES_LITTEN,
+    SPECIES_POPPLIO,
+};
+
+static const u16 sStarterMonGalar[STARTER_MON_COUNT] =
+{
+    SPECIES_GROOKEY,
+    SPECIES_SCORBUNNY,
+    SPECIES_SOBBLE,
+};
+
+static const u16 sStarterMonHisui[STARTER_MON_COUNT] =
+{
+    SPECIES_ROWLET,
+    SPECIES_CYNDAQUIL,
+    SPECIES_OSHAWOTT,
 };
 
 static const struct BgTemplate sBgTemplates[3] =
@@ -357,7 +379,28 @@ u16 GetStarterPokemon(u16 chosenStarterId)
 {
     if (chosenStarterId > STARTER_MON_COUNT)
         chosenStarterId = 0;
-    return sStarterMon[chosenStarterId];
+
+    switch (gSpecialVar_0x800A)
+    {
+    case 0:
+        return sStarterMonKalos[chosenStarterId];
+    case 1:
+        return sStarterMonAlola[chosenStarterId];
+    case 2: 
+        return sStarterMonGalar[chosenStarterId];
+    default:
+        return sStarterMonKalos[chosenStarterId];
+    }
+
+/*    if (VAR_STARTER_REGION_CHOICE == 0)
+        return sStarterMonKalos[chosenStarterId];
+    else if (VAR_STARTER_REGION_CHOICE == 1)
+        return sStarterMonAlola[chosenStarterId];
+    else if (VAR_STARTER_REGION_CHOICE == 2)
+        return sStarterMonGalar[chosenStarterId];
+    else
+        return sStarterMonKalos[chosenStarterId];
+*/
 }
 
 static void VblankCB_StarterChoose(void)
