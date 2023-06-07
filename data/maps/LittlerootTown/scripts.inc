@@ -1082,4 +1082,3 @@ LittlerootTown_Text_Not_Telling:
 	.string "Is that a secret? \p"
 	.string "That's okay, you don't have to\n"
 	.string "tell me if you don't want to...$"
-	

@@ -39,6 +39,54 @@ OldaleTown_PokemonCenter_1F_EventScript_WirelessClubAvailable::
 	release
 	end
 
+OldaleTown_PokemonCenter_1F_EventScript_WaldaPhrase_Test::
+	lock
+	faceplayer
+	specialvar VAR_RESULT, TryBufferWaldaPhrase
+	goto_if_eq VAR_RESULT, FALSE, OldaleTown_PokemonCenter_1F_EventScript_FirstWaldaPhrase
+	goto_if_eq VAR_RESULT, TRUE, OldaleTown_PokemonCenter_1F_EventScript_NewWaldaPhrase
+
+OldaleTown_PokemonCenter_1F_EventScript_FirstWaldaPhrase::
+	msgbox OldaleTown_PokemonCenter_1F_Text_FirstPhrase, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, OldaleTown_PokemonCenter_1F_EventScript_DeclineGivePhrase
+	msgbox OldaleTown_PokemonCenter_1F_Text_WonderfulLetsHearSuggestion, MSGBOX_DEFAULT
+	goto OldaleTown_PokemonCenter_1F_EventScript_GivePhrase
+
+OldaleTown_PokemonCenter_1F_EventScript_NewWaldaPhrase::
+	msgbox OldaleTown_PokemonCenter_1F_Text_NewPhrase, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, OldaleTown_PokemonCenter_1F_EventScript_DeclineGivePhrase
+	msgbox OldaleTown_PokemonCenter_1F_Text_WonderfulLetsHearSuggestion, MSGBOX_DEFAULT
+	goto OldaleTown_PokemonCenter_1F_EventScript_GivePhrase
+
+OldaleTown_PokemonCenter_1F_EventScript_DeclineGivePhrase::
+	msgbox OldaleTown_PokemonCenter_1F_Text_OhIsThatRight, MSGBOX_DEFAULT
+	release
+	end
+
+OldaleTown_PokemonCenter_1F_EventScript_CancelGivePhrase::
+	msgbox OldaleTown_PokemonCenter_1F_Text_OhYouDontKnowAny, MSGBOX_DEFAULT
+	release
+	end
+
+OldaleTown_PokemonCenter_1F_EventScript_GivePhrase::
+	special DoWaldaNamingScreen
+	waitstate
+	goto_if_eq VAR_0x8004, 1, OldaleTown_PokemonCenter_1F_EventScript_CancelGivePhrase
+	specialvar VAR_RESULT, TryGetWallpaperWithWaldaPhrase
+	goto_if_eq VAR_RESULT, TRUE, OldaleTown_PokemonCenter_1F_EventScript_IsWaldaPhrase
+	goto_if_eq VAR_RESULT, FALSE, OldaleTown_PokemonCenter_1F_EventScript_NotWaldaPhrase
+	end
+
+OldaleTown_PokemonCenter_1F_EventScript_IsWaldaPhrase::
+	msgbox OldaleTown_PokemonCenter_1F_Text_GoodWaldaPhrase, MSGBOX_DEFAULT
+	release
+	end
+
+OldaleTown_PokemonCenter_1F_EventScript_NotWaldaPhrase::
+	msgbox OldaleTown_PokemonCenter_1F_Text_NotWaldaPhrase, MSGBOX_DEFAULT
+	release
+	end
+
 OldaleTown_PokemonCenter_1F_Text_TrainersCanUsePC:
 	.string "That PC in the corner there is\n"
 	.string "for any POKéMON TRAINER to use.\p"
@@ -62,3 +110,40 @@ OldaleTown_PokemonCenter_1F_Text_TradedInWirelessClub:
 	.string "the second floor was built recently.\p"
 	.string "I traded POKéMON right away.$"
 
+OldaleTown_PokemonCenter_1F_Text_FirstPhrase:
+	.string "Hello, I'm here to test if the\n"
+	.string "Walda phrase script works.\p"
+	.string "Do you have a funny thing to say to me?$"
+
+OldaleTown_PokemonCenter_1F_Text_NewPhrase:
+	.string "Would you like to tell me\n"
+	.string "a new Walda Phrase?$"
+
+OldaleTown_PokemonCenter_1F_Text_WonderfulLetsHearSuggestion:
+	.string "Oh, that's wonderful.\n"
+	.string "So, let's hear it, your suggestion.$"
+
+OldaleTown_PokemonCenter_1F_Text_OhIsThatRight:
+	.string "Oh, is that right?\p"
+	.string "Well, if you come up with a good\n"
+	.string "suggestion, I'm all ears.$"
+
+OldaleTown_PokemonCenter_1F_Text_OhYouDontKnowAny:
+	.string "Oh, so you don't know any good words.\n"
+	.string "I guess I'll try to amuse her with\l"
+	.string "the saying I used before.\p"
+	.string "Anyways, if you have a good suggestion,\n"
+	.string "don't hesitate in telling me, okay?$"
+
+OldaleTown_PokemonCenter_1F_Text_GoodWaldaPhrase:
+	.string "{STR_VAR_1}.\n"
+	.string "{STR_VAR_1}.\p"
+	.string "Oh, yes! It worked!\n"
+	.string "You actually found a Walda Phrase!$"
+
+OldaleTown_PokemonCenter_1F_Text_NotWaldaPhrase:
+	.string "{STR_VAR_1}.\n"
+	.string "{STR_VAR_1}.\p"
+	.string "Well, this isn't a funny phrase.\p"
+	.string "Maybe try again next time!\n"
+	.string "It's hard to find a working Walda Phrase.$"
