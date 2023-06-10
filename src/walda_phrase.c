@@ -32,14 +32,10 @@ static bool32 TryGiveMonFunction(u8 *, u16 *, u16 *, u16, u8 *);
 // All vowels are excluded, as well as X/x, Y/y, l, r, t, v, w, and z.
 static const u8 sWaldaLettersTable[1 << BITS_PER_LETTER] =
 {
-    CHAR_B, CHAR_C, CHAR_D, CHAR_F, 
-    CHAR_G, CHAR_H, CHAR_J, CHAR_K, 
-    CHAR_L, CHAR_M, CHAR_N, CHAR_P, 
-    CHAR_Q, CHAR_R, CHAR_S, CHAR_T, 
-    CHAR_V, CHAR_W, CHAR_Z, CHAR_b, 
-    CHAR_c, CHAR_d, CHAR_f, CHAR_g, 
-    CHAR_h, CHAR_j, CHAR_k, CHAR_m, 
-    CHAR_n, CHAR_p, CHAR_q, CHAR_s
+    CHAR_B, CHAR_C, CHAR_D, CHAR_F, CHAR_G, CHAR_H, CHAR_J, CHAR_K, 
+    CHAR_L, CHAR_M, CHAR_N, CHAR_P, CHAR_Q, CHAR_R, CHAR_S, CHAR_T, 
+    CHAR_V, CHAR_W, CHAR_Z, CHAR_b, CHAR_c, CHAR_d, CHAR_f, CHAR_g, 
+    CHAR_h, CHAR_j, CHAR_k, CHAR_m, CHAR_n, CHAR_p, CHAR_q, CHAR_s
 };
 
 enum
@@ -371,8 +367,8 @@ trainer_Check_Lo =  [T, I, D, C, h, e, c, k]
 trainer_Check_Hi =  [T, I, D, C, h, e, c, k]
 */
 
-#define monSpecies          monData[0]      //full eight bits, ninth bit is the MSB of monLevel
-#define monLevel            monData[1]      //six bits, MSB is the LSB of monLevel, truncate the first two bits for level
+#define monLevel            monData[0]      //last six bits, first bit is used for monSpecies
+#define monSpecies          monData[1]      //eight bits, get the final bit as the first bit from monLevel, bit shift monSpecies by seven
 #define monHeldItem_L       monData[2]
 #define monHeldItem_H       monData[3]      //also a six bit key hidden here sure lmao
 #define trainer_Check_Lo    monData[4]
@@ -426,7 +422,7 @@ static bool32 TryGiveMonFunction(u8 *level, u16 *species, u16 *heldItem, u16 tra
 
 
     // Successful phrase, save resulting wallpaper
-    ptr = (u16 *) &monSpecies;      //i think i bit shift right this seven times?
+    ptr = (u16 *) &monLevel;      //i think i bit shift right this seven times?
     *species = *ptr;
 
     *level = monLevel;      //remember to drop the first two bits of this!

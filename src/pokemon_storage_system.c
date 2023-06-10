@@ -9817,13 +9817,13 @@ void SetPassword(const u8 *src)
 void SetMonLevel(u8 level)
 {
     gSaveBlock1Ptr->password.level = (level & 0x3F) + 1;     //no level 0 nonsense allowed here
-    //gSpecialVar_0x8007 = (u16 *)((level) + 1);
+    gSpecialVar_0x8007 = ((level & 0x3F) + 1);
 }
 
 void SetMonSpecies(u16 species)
 {
-    gSaveBlock1Ptr->password.species = (species >> 7);
-    gSpecialVar_0x8006 = (species >> 7);
+    gSaveBlock1Ptr->password.species = ((species >> 7) & 0x1ff);
+    gSpecialVar_0x8006 = ((species >> 7) & 0x1ff);
 }
 
 void SetMonHeldItem(u16 item)

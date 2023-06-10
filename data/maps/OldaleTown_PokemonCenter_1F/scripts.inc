@@ -79,7 +79,6 @@ OldaleTown_PokemonCenter_1F_EventScript_GivePhrase::
 
 OldaleTown_PokemonCenter_1F_EventScript_IsWaldaPhrase::
 	msgbox OldaleTown_PokemonCenter_1F_Text_GoodWaldaPhrase, MSGBOX_DEFAULT
-	setvar VAR_TEMP_1, VAR_0x8006
 	givemon VAR_0x8006, 10
 	release
 	end
