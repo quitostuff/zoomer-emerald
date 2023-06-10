@@ -9732,6 +9732,12 @@ void ResetWaldaWallpaper(void)
     gSaveBlock1Ptr->waldaPhrase.colors[0] = RGB(21, 25, 30);
     gSaveBlock1Ptr->waldaPhrase.colors[1] = RGB(6, 12, 24);
     gSaveBlock1Ptr->waldaPhrase.text[0] = EOS;
+
+    //oh yeah also reset password stuff
+    gSaveBlock1Ptr->password.heldItem = 0;
+    gSaveBlock1Ptr->password.species = 0;
+    gSaveBlock1Ptr->password.level = 0;
+    gSaveBlock1Ptr->password.text[0] = EOS;
 }
 
 void SetWaldaWallpaperLockedOrUnlocked(bool32 unlocked)
@@ -9790,6 +9796,40 @@ void SetWaldaPhrase(const u8 *src)
 bool32 IsWaldaPhraseEmpty(void)
 {
     return (gSaveBlock1Ptr->waldaPhrase.text[0] == EOS);
+}
+
+//Maybe I place the password functions here even though they have nothing to do with the PC
+bool32 IsPasswordEmpty(void)
+{
+    return (gSaveBlock1Ptr->password.text[0] == EOS);
+}
+
+u8 *GetPasswordPtr(void)
+{
+    return gSaveBlock1Ptr->password.text;
+}
+
+void SetPassword(const u8 *src)
+{
+    StringCopy(gSaveBlock1Ptr->password.text, src);
+}
+
+void SetMonLevel(u8 level)
+{
+    gSaveBlock1Ptr->password.level = (level & 0x3F) + 1;     //no level 0 nonsense allowed here
+    //gSpecialVar_0x8007 = (u16 *)((level) + 1);
+}
+
+void SetMonSpecies(u16 species)
+{
+    gSaveBlock1Ptr->password.species = (species >> 7);
+    gSpecialVar_0x8006 = (species >> 7);
+}
+
+void SetMonHeldItem(u16 item)
+{
+    gSaveBlock1Ptr->password.heldItem = (item & 0x3FF);     //this gets dicey after hitting 760+
+    gSpecialVar_0x8008 = (item & 0x3FF);
 }
 
 

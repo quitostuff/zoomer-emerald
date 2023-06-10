@@ -536,3 +536,6 @@ gSpecials::
 	def_special TrySetBattleTowerLinkType
 	def_special SetTotemBoost
 	def_special TrySpecialOverworldEvo
+	def_special TryBufferPassword
+	def_special DoPasswordScreen
+	def_special TryGiveMonWithPassword

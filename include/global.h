@@ -808,6 +808,14 @@ struct WaldaPhrase
     bool8 patternUnlocked;
 };
 
+struct Password
+{
+    u8 text[11];
+    u8 level;
+    u16 species;
+    u16 heldItem;
+};
+
 struct TrainerNameRecord
 {
     u32 trainerId;
@@ -1018,6 +1026,7 @@ struct SaveBlock1
     /*0x3???*/ u8 registeredTexts[UNION_ROOM_KB_ROW_COUNT][21];
     /*0x3???*/ struct TrainerHillSave trainerHill;
     /*0x3???*/ struct WaldaPhrase waldaPhrase;
+    /*0x3???*/ struct Password password;
     // sizeof: 0x3???
 };
 

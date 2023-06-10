@@ -11,6 +11,7 @@
 #include "field_screen_effect.h"
 
 extern const u8 gText_Peekaboo[];
+extern const u8 gText_GiveIdol[];
 
 static void CB2_HandleGivenWaldaPhrase(void);
 static u32 GetWaldaPhraseInputCase(u8 *);
@@ -20,6 +21,10 @@ static u32 GetWallpaperDataBits(u8 *, u32, u32);
 static void RotateWallpaperDataLeft(u8 *, s32, s32);
 static void MaskWallpaperData(u8 *, u32, u8);
 
+static void CB2_HandleGivenPassword(void);
+static u32 GetPasswordInputCase(u8 *);
+static bool32 TryGiveMonFunction(u8 *, u16 *, u16 *, u16, u8 *);
+
 // There are 32 (2^5) unique letters allowed in a successful phrase for Walda.
 #define BITS_PER_LETTER 5
 
@@ -27,8 +32,14 @@ static void MaskWallpaperData(u8 *, u32, u8);
 // All vowels are excluded, as well as X/x, Y/y, l, r, t, v, w, and z.
 static const u8 sWaldaLettersTable[1 << BITS_PER_LETTER] =
 {
-    CHAR_B, CHAR_C, CHAR_D, CHAR_F, CHAR_G, CHAR_H, CHAR_J, CHAR_K, CHAR_L, CHAR_M, CHAR_N, CHAR_P, CHAR_Q, CHAR_R, CHAR_S, CHAR_T, CHAR_V, CHAR_W, CHAR_Z,
-    CHAR_b, CHAR_c, CHAR_d, CHAR_f, CHAR_g, CHAR_h, CHAR_j, CHAR_k,         CHAR_m, CHAR_n, CHAR_p, CHAR_q,         CHAR_s
+    CHAR_B, CHAR_C, CHAR_D, CHAR_F, 
+    CHAR_G, CHAR_H, CHAR_J, CHAR_K, 
+    CHAR_L, CHAR_M, CHAR_N, CHAR_P, 
+    CHAR_Q, CHAR_R, CHAR_S, CHAR_T, 
+    CHAR_V, CHAR_W, CHAR_Z, CHAR_b, 
+    CHAR_c, CHAR_d, CHAR_f, CHAR_g, 
+    CHAR_h, CHAR_j, CHAR_k, CHAR_m, 
+    CHAR_n, CHAR_p, CHAR_q, CHAR_s
 };
 
 enum
@@ -115,13 +126,13 @@ static u8 GetLetterTableId(u8 letter)
 {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(sWaldaLettersTable); i++)
+    for (i = 0; i < ARRAY_COUNT(sWaldaLettersTable); i++)       //finds and returns the index within waldaLettersTable that corresponds with a matching letter
     {
         if (sWaldaLettersTable[i] == letter)
             return i;
     }
 
-    return ARRAY_COUNT(sWaldaLettersTable);
+    return ARRAY_COUNT(sWaldaLettersTable);     //oops the letter is not there
 }
 
 // Attempts to generate a wallpaper based on the given trainer id and phrase.
@@ -144,7 +155,7 @@ static bool32 TryCalculateWallpaper(u16 *backgroundClr, u16 *foregroundClr, u8 *
 {
     s32 i;
     ALIGNED(2) u8 data[NUM_WALLPAPER_DATA_BYTES];
-    u8 charsByTableId[WALDA_PHRASE_LENGTH];
+    u8 charsByTableId[WALDA_PHRASE_LENGTH];     //a bunch of indicies that correspond to a place in waldaLettersTable
     u16 *ptr;
 
     // Reject any phrase that does not use the full length
@@ -275,4 +286,152 @@ static u32 GetWallpaperDataBits(u8 *data, u32 offset, u32 numBits)
     }
 
     return bits;
+}
+
+        /******COOL NEW PASSWORD STUFF GOES HERE******/
+
+u16 TryBufferPassword(void)
+{
+    if (IsPasswordEmpty())
+        return FALSE;
+
+    StringCopy(gStringVar1, GetPasswordPtr());
+    return TRUE;
+}
+
+void DoPasswordScreen(void)
+{
+    StringCopy(gStringVar2, GetPasswordPtr());
+    DoNamingScreen(NAMING_SCREEN_PASSWORD, gStringVar2, 0, 0, 0, CB2_HandleGivenPassword);
+}
+
+static void CB2_HandleGivenPassword(void)
+{
+    gSpecialVar_0x8004 = GetPasswordInputCase(gStringVar2);
+
+    switch (gSpecialVar_0x8004)
+    {
+    case PHRASE_EMPTY:
+        // If saved phrase is also empty, set default phrase
+        // Otherwise keep saved phrase
+        if (IsPasswordEmpty())
+            SetPassword(gText_GiveIdol);
+        else
+            gSpecialVar_0x8004 = PHRASE_NO_CHANGE;
+        break;
+    case PHRASE_CHANGED:
+        SetPassword(gStringVar2);
+        break;
+    case PHRASE_NO_CHANGE:
+        break;
+    }
+
+    StringCopy(gStringVar1, GetPasswordPtr());
+    gFieldCallback = FieldCB_ContinueScriptHandleMusic;
+    SetMainCallback2(CB2_ReturnToField);
+}
+
+static u32 GetPasswordInputCase(u8 *inputPtr)
+{
+    // No input given
+    if (inputPtr[0] == EOS)
+        return PHRASE_EMPTY;
+
+    // Input given is the same as saved phrase
+    if (StringCompare(inputPtr, GetPasswordPtr()) == 0)
+        return PHRASE_NO_CHANGE;
+
+    // Input is new phrase
+    return PHRASE_CHANGED;
+}
+
+u16 TryGiveMonWithPassword(void)
+{
+    u8 level;
+    u16 species, heldItem;
+    u16 trainerId = GetTrainerId(gSaveBlock2Ptr->playerTrainerId);
+    gSpecialVar_Result = TryGiveMonFunction(&level, &species, &heldItem, trainerId, GetPasswordPtr());
+
+    if (gSpecialVar_Result)
+    {
+        SetMonSpecies(species);
+        SetMonLevel(level);
+        SetMonHeldItem(heldItem);
+    }
+
+    return (bool8)gSpecialVar_Result;
+}
+
+/*
+monSpecies =        [S, p, e, c, i, e, S, p]
+monLevel =          [e, _, L, e, v, e, L, e]
+monHeldItem_L =     [H, e, l, d, I, t, e, m]
+monHeldItem_H =     [_, _, _, _, _, _, H, I]
+trainer_Check_Lo =  [T, I, D, C, h, e, c, k]
+trainer_Check_Hi =  [T, I, D, C, h, e, c, k]
+*/
+
+#define monSpecies          monData[0]      //full eight bits, ninth bit is the MSB of monLevel
+#define monLevel            monData[1]      //six bits, MSB is the LSB of monLevel, truncate the first two bits for level
+#define monHeldItem_L       monData[2]
+#define monHeldItem_H       monData[3]      //also a six bit key hidden here sure lmao
+#define trainer_Check_Lo    monData[4]
+#define trainer_Check_Hi    monData[5]
+#define NUM_PASSWORD_DATA_BYTES 6
+
+static bool32 TryGiveMonFunction(u8 *level, u16 *species, u16 *heldItem, u16 trainerId, u8 *phrase)
+{
+    s32 i;
+    ALIGNED(2) u8 monData[NUM_PASSWORD_DATA_BYTES];
+    u8 charsByTableId[PASSWORD_LENGTH];
+    u16 *ptr;
+
+    // Reject any phrase that does not use the full length
+    if (StringLength(phrase) != PASSWORD_LENGTH)
+        return FALSE;
+
+    // Reject any phrase that uses characters not in sWaldaLettersTable
+    for (i = 0; i < PASSWORD_LENGTH; i++)
+    {
+        charsByTableId[i] = GetLetterTableId(phrase[i]);
+        if (charsByTableId[i] == ARRAY_COUNT(sWaldaLettersTable))
+            return FALSE;
+    }
+
+    // Use the given phrase to populate the wallpaper data array
+    // The data array is 6 bytes (48 bits) long, and each letter contributes to 5 bits of the array
+    // Because the phrase is 10 letters long there are 50 bits from the phrase to distribute
+    // Therefore the last letter contributes to the last 3 bits of the array, and the remaining 2 bits wrap around
+    for (i = 0; i < PASSWORD_LENGTH - 1; i++)
+        SetWallpaperDataFromLetter(monData, charsByTableId, BITS_PER_LETTER * i, TO_BIT_OFFSET(i), BITS_PER_LETTER);
+
+    // Do first 3 bits of the last letter
+    SetWallpaperDataFromLetter(monData, charsByTableId, BITS_PER_LETTER * (PASSWORD_LENGTH - 1), TO_BIT_OFFSET(PASSWORD_LENGTH - 1), 3);
+
+    // Check the first 2 bits of the data array against the remaining 3 bits of the last letter
+    // Reject the phrase if they are not already the same
+    if (GetWallpaperDataBits(monData, 0, 2) != GetWallpaperDataBits(charsByTableId, TO_BIT_OFFSET(PASSWORD_LENGTH - 1) + 3, 2))
+        return FALSE;
+
+    // Perform some relatively arbitrary changes to the wallpaper data using the last byte (KEY) 
+//    RotateWallpaperDataLeft(monData, NUM_WALLPAPER_DATA_BYTES,     21);
+//    RotateWallpaperDataLeft(monData, NUM_WALLPAPER_DATA_BYTES - 1, KEY & 0xF);
+//    MaskWallpaperData(monData, NUM_WALLPAPER_DATA_BYTES - 1, KEY >> 4);
+
+    // Reject the results of any phrase that are 'incompatible' with the player's trainer id
+    if (trainer_Check_Lo != (monLevel ^ monHeldItem_H ^ (trainerId & 0xFF)))
+        return FALSE;
+    if (trainer_Check_Hi != (monSpecies ^ monHeldItem_L ^ (trainerId >> 8)))
+        return FALSE;
+
+
+    // Successful phrase, save resulting wallpaper
+    ptr = (u16 *) &monSpecies;      //i think i bit shift right this seven times?
+    *species = *ptr;
+
+    *level = monLevel;      //remember to drop the first two bits of this!
+
+    *heldItem = monHeldItem_L;
+
+    return TRUE;
 }

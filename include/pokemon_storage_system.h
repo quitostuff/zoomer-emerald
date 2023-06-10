@@ -72,4 +72,12 @@ u8 *GetWaldaPhrasePtr(void);
 void SetWaldaPhrase(const u8 *src);
 bool32 IsWaldaPhraseEmpty(void);
 
+//password please?
+bool32 IsPasswordEmpty(void);
+u8 *GetPasswordPtr(void);
+void SetPassword(const u8 *src);
+void SetMonLevel(u8 level);
+void SetMonSpecies(u16 species);
+void SetMonHeldItem(u16 item);
+
 #endif // GUARD_POKEMON_STORAGE_SYSTEM_H

@@ -42,7 +42,7 @@ OldaleTown_PokemonCenter_1F_EventScript_WirelessClubAvailable::
 OldaleTown_PokemonCenter_1F_EventScript_WaldaPhrase_Test::
 	lock
 	faceplayer
-	specialvar VAR_RESULT, TryBufferWaldaPhrase
+	specialvar VAR_RESULT, TryBufferPassword
 	goto_if_eq VAR_RESULT, FALSE, OldaleTown_PokemonCenter_1F_EventScript_FirstWaldaPhrase
 	goto_if_eq VAR_RESULT, TRUE, OldaleTown_PokemonCenter_1F_EventScript_NewWaldaPhrase
 
@@ -69,16 +69,18 @@ OldaleTown_PokemonCenter_1F_EventScript_CancelGivePhrase::
 	end
 
 OldaleTown_PokemonCenter_1F_EventScript_GivePhrase::
-	special DoWaldaNamingScreen
+	special DoPasswordScreen
 	waitstate
 	goto_if_eq VAR_0x8004, 1, OldaleTown_PokemonCenter_1F_EventScript_CancelGivePhrase
-	specialvar VAR_RESULT, TryGetWallpaperWithWaldaPhrase
+	specialvar VAR_RESULT, TryGiveMonWithPassword
 	goto_if_eq VAR_RESULT, TRUE, OldaleTown_PokemonCenter_1F_EventScript_IsWaldaPhrase
 	goto_if_eq VAR_RESULT, FALSE, OldaleTown_PokemonCenter_1F_EventScript_NotWaldaPhrase
 	end
 
 OldaleTown_PokemonCenter_1F_EventScript_IsWaldaPhrase::
 	msgbox OldaleTown_PokemonCenter_1F_Text_GoodWaldaPhrase, MSGBOX_DEFAULT
+	setvar VAR_TEMP_1, VAR_0x8006
+	givemon VAR_0x8006, 10
 	release
 	end
 
