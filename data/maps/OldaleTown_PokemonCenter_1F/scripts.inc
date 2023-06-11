@@ -80,6 +80,9 @@ OldaleTown_PokemonCenter_1F_EventScript_GivePhrase::
 OldaleTown_PokemonCenter_1F_EventScript_IsWaldaPhrase::
 	msgbox OldaleTown_PokemonCenter_1F_Text_GoodWaldaPhrase, MSGBOX_DEFAULT
 	givemon VAR_0x8006, 10
+	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PARTY, OldaleTown_PokemonCenter_1F_EventScript_ReceivedMonParty
+	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PC, OldaleTown_PokemonCenter_1F_EventScript_ReceivedMonPC
+	goto Common_EventScript_NoMoreRoomForPokemon
 	release
 	end
 
@@ -87,6 +90,35 @@ OldaleTown_PokemonCenter_1F_EventScript_NotWaldaPhrase::
 	msgbox OldaleTown_PokemonCenter_1F_Text_NotWaldaPhrase, MSGBOX_DEFAULT
 	release
 	end
+
+OldaleTown_PokemonCenter_1F_EventScript_ReceivedMonParty::
+	call OldaleTown_PokemonCenter_1F_EventScript_ReceivedMonFanfare
+	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
+	call Common_EventScript_GetGiftMonPartySlot
+	call Common_EventScript_NameReceivedPartyMon
+	end
+
+OldaleTown_PokemonCenter_1F_EventScript_ReceivedMonPC::
+	call OldaleTown_PokemonCenter_1F_EventScript_ReceivedMonFanfare
+	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, OldaleTown_PokemonCenter_1F_EventScript_SendMonToPC
+	call Common_EventScript_NameReceivedBoxMon
+	goto OldaleTown_PokemonCenter_1F_EventScript_SendMonToPC
+	end
+
+OldaleTown_PokemonCenter_1F_EventScript_SendMonToPC::
+	call Common_EventScript_TransferredToPC
+	release
+	end
+
+OldaleTown_PokemonCenter_1F_EventScript_ReceivedMonFanfare::
+	playfanfare MUS_OBTAIN_ITEM
+	bufferspeciesname STR_VAR_1, VAR_0x8006
+	copyvar VAR_TEMP_1, VAR_0x8006
+	message OldaleTown_PokemonCenter_1F_Text_PlayerReceivedMon
+	waitmessage
+	waitfanfare
+	return
 
 OldaleTown_PokemonCenter_1F_Text_TrainersCanUsePC:
 	.string "That PC in the corner there is\n"
@@ -148,3 +180,6 @@ OldaleTown_PokemonCenter_1F_Text_NotWaldaPhrase:
 	.string "Well, this isn't a funny phrase.\p"
 	.string "Maybe try again next time!\n"
 	.string "It's hard to find a working Walda Phrase.$"
+
+OldaleTown_PokemonCenter_1F_Text_PlayerReceivedMon:
+	.string "{PLAYER} received {STR_VAR_1}!$"
