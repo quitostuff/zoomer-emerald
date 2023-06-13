@@ -9822,8 +9822,11 @@ void SetMonLevel(u8 level)
 
 void SetMonSpecies(u16 species)
 {
-    gSaveBlock1Ptr->password.species = ((species >> 7) & 0x1ff);
-    gSpecialVar_0x8006 = ((species >> 7) & 0x1ff);
+    if (((species >> 6) & 0x3ff) > 971)      // 971 for 905 enamorus + 66 for forms up to indeedee-f
+        species -= 62144; //this is 971 left shifted by 6
+
+    gSaveBlock1Ptr->password.species = ((species >> 6) & 0x3ff);
+    gSpecialVar_0x8006 = ((species >> 6) & 0x3ff);
 }
 
 void SetMonHeldItem(u16 item)

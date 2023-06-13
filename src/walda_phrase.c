@@ -367,8 +367,8 @@ trainer_Check_Lo =  [T, I, D, C, h, e, c, k]
 trainer_Check_Hi =  [T, I, D, C, h, e, c, k]
 */
 
-#define monLevel            monData[0]      //last six bits, first bit is used for monSpecies
-#define monSpecies          monData[1]      //eight bits, get the final bit as the first bit from monLevel, bit shift monSpecies by seven
+#define monLevel            monData[0]      //last six bits, first two bits are used for monSpecies
+#define monSpecies          monData[1]      //eight bits, get the final two bits as the first two bits from monLevel, these two are the LSBs of monSpecies hopefully
 #define monHeldItem_L       monData[2]
 #define monHeldItem_H       monData[3]      //also a six bit key hidden here sure lmao
 #define trainer_Check_Lo    monData[4]
@@ -422,7 +422,7 @@ static bool32 TryGiveMonFunction(u8 *level, u16 *species, u16 *heldItem, u16 tra
 
 
     // Successful phrase, save resulting wallpaper
-    ptr = (u16 *) &monLevel;      //i think i bit shift right this seven times?
+    ptr = (u16 *) &monLevel;      //i think i bit shift right this six times?
     *species = *ptr;
 
     *level = monLevel;      //remember to drop the first two bits of this!
